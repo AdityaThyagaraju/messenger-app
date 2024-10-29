@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Conversation({ user, index, setSelected, backGround }){
+function Conversation({ user, index, username, setSelected, backGround }){
   const classname = "border-b-2 border-slate-100 " + backGround;
 
   function handleSelect() {

@@ -9,9 +9,11 @@ function Signup() {
   const [name, setName] = useState("");
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
+  const server_url = process.env.REACT_APP_SERVER_URL;
+
   async function signup(e) {
     e.preventDefault();
-    const savedUserResponse = await fetch("http://127.0.0.1:3001/Signup", {
+    const savedUserResponse = await fetch(server_url + "signup", {
       method: "POST",
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify({
@@ -22,9 +24,10 @@ function Signup() {
     });
     savedUserResponse.json().then((newUser)=>{
       setUser(newUser);
-      navigate("/Integrate");
+      navigate("/");
     })
   }
+
   return (
     <div className="bg-blue-800 min-h-screen flex items-center justify-center">
       <form className="min-w-96 bg-white min-h-64 rounded-lg" onSubmit={signup}>

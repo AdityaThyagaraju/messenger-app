@@ -8,10 +8,11 @@ function Login() {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const navigate = useNavigate();
+  const server_url = process.env.REACT_APP_SERVER_URL;
 
   async function login(e) {
     e.preventDefault();
-    const savedUserResponse = await fetch("http://127.0.0.1:3001/Login", {
+    const savedUserResponse = await fetch(server_url + 'login', {
       method: "POST",
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify({
@@ -21,7 +22,7 @@ function Login() {
     });
     savedUserResponse.json().then((newUser)=>{
       setUser(newUser);
-      navigate("/Integrate");
+      navigate("/");
     })
   }
 
