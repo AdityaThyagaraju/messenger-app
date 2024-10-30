@@ -1,10 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import MessageSection from "../components/MessageSection";
 import ProfileSection from "../components/ProfileSection";
 import ConversationSection from "../components/ConversationSection";
+import UserContext from "../context/UserContext";
 
 function Home(){
+
+  let {user, setUser}  = useContext(UserContext);
+  let [conversations, setConversations] = useState([]);
+  let [selectedUserId, setSelectedUserId] = useState(-1);
+  let url = process.env.REACT_APP_SERVER_URL;
+
+  useEffect(() => {
+      let getConversations = async () => {
+        await fetch(url+'/conversations/'+user.id,
+          {
+            headers:{
+              Authorization : user.token
+            },
+            method:"GET"
+          }
+        ).then((data) => setConversations(data));
+      }
+
+      if(user!=null){
+        getConversations();
+      }
+    })
 
   return (
     <div className="flex h-screen bg-gray-200 gap-1">
@@ -25,9 +48,15 @@ function Home(){
         </div>
       </div>
 
-      <ConversationSection />
-      <MessageSection />
-      <ProfileSection />
+      <ConversationSection 
+      conversations={conversations} 
+      selectConversation={setSelectedUserId} />
+
+      <MessageSection 
+      conversationId={selectedUserId} />
+
+      <ProfileSection 
+      userId={selectedUserId} />
       
     </div>
   );

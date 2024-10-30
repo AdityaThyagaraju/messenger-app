@@ -2,10 +2,8 @@ import React from "react";
 import Conversation from "./Conversation";
 import { useState } from "react";
 
-function ConversationSection(){
+function ConversationSection({conversations, setSelected}){
     
-  const [selected, setSelected] = useState(null);
-
     return (
         <div className="flex flex-col w-1/6 gap-1">
         <div className="p-3 bg-white h-14">
@@ -16,6 +14,13 @@ function ConversationSection(){
           </button>
         </div>
         <div className="h-full flex flex-col gap-0.5 overflow-auto bg-white">
+          {/* {conversations.map((conversation, key) => 
+          <Conversation
+          index={key}
+          backGround={selected == String(key) ? "bg-slate-200" : ""}
+          setSelected={setSelected}
+          />
+          )} */}
           <Conversation
             index="1"
             backGround={selected == "1" ? "bg-slate-200" : ""}
