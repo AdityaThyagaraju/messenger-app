@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,11 +22,17 @@ import com.dev.userService.dto.UserDto;
 import com.dev.userService.model.User;
 import com.dev.userService.model.UserPrincipal;
 import com.dev.userService.repositrories.UserRepository;
+import com.dev.userService.services.JwtService;
 import com.dev.userService.services.UserService;
 import com.dev.userService.services.UserValidateService;
 
+
 @RestController
+@RequestMapping(path = "/user")
 public class UserController {
+	
+	@Autowired
+	JwtService jwtService;
 	
 	@Autowired
 	private UserValidateService userValidateService;
@@ -54,8 +61,8 @@ public class UserController {
     	return new ResponseEntity<String>(userValidateService.generateToken(user), HttpStatusCode.valueOf(200));
     }
 	
-	@RequestMapping(path="/user", method=RequestMethod.GET)
-    public ResponseEntity<UserDto> register(){
+	@RequestMapping(path="/extract-user", method=RequestMethod.GET)
+    public ResponseEntity<UserDto> extractUser(){
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
     	
@@ -63,7 +70,7 @@ public class UserController {
     	return new ResponseEntity<UserDto>(new UserDto(user, userValidateService.generateToken(user)), HttpStatusCode.valueOf(200));
     }
 	
-	@RequestMapping(path="/user/friend/{id}", method=RequestMethod.GET)
+	@RequestMapping(path="/friend/{id}", method=RequestMethod.GET)
     public ResponseEntity<UserDto> getFriend(@PathVariable String id){
 		User user = getUserFromToken();
         
@@ -74,16 +81,16 @@ public class UserController {
     	return new ResponseEntity<UserDto>(new UserDto(userService.getUserById(id), userValidateService.generateToken(user)), HttpStatusCode.valueOf(200));
     }
 	
-	@RequestMapping(path="/user/friend/{id}", method=RequestMethod.POST)
-    public ResponseEntity<String> acceptFriend(@PathVariable String id){
+	@RequestMapping(path="/accept-friend-request", method=RequestMethod.POST)
+    public ResponseEntity<String> acceptFriend(@RequestParam(name = "friendId") String id){
 		User user = getUserFromToken();
 		return new ResponseEntity<String>(userService.acceptFriendRequest(user.getId(), id), HttpStatusCode.valueOf(200));
     }
 	
-	@RequestMapping(path="/user/friend/request/{id}", method=RequestMethod.POST)
-    public ResponseEntity<String> sendFriendRequest(@PathVariable String id){
+	@RequestMapping(path="/send-friend-request", method=RequestMethod.POST)
+    public ResponseEntity<String> sendFriendRequest(@RequestParam(name = "friendId") String id){
 		User user = getUserFromToken();
-        userService.addFriendRequest(user.getId(), id);
+        userService.sendFriendRequest(user.getId(), id);
         return new ResponseEntity<String>("Success", HttpStatusCode.valueOf(200));
     }
 }

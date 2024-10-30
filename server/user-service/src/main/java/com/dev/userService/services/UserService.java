@@ -30,7 +30,7 @@ public class UserService {
 		return userRepository.findById(id).get();
 	}
 	
-	public void addFriendRequest(String userId, String friendId) {
+	public void sendFriendRequest(String userId, String friendId) {
         Optional<User> userOptional = userRepository.findById(friendId);
         
         if (userOptional.isPresent()) {
@@ -41,7 +41,7 @@ public class UserService {
             	requests = new ArrayList<String>();
             }
 
-            if (!requests.contains(userId)) {
+            if (!requests.contains(userId) && (user.getFriendIds()==null || !user.getFriendIds().contains(friendId))) {
             	requests.add(userId);
             }
 

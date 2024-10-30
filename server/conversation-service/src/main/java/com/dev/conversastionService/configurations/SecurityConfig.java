@@ -1,4 +1,4 @@
-package com.dev.userService.configurations;
+package com.dev.conversastionService.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,14 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.dev.userService.filters.JwtFilter;
-import com.dev.userService.services.UserAuthService;
+import com.dev.conversastionService.filters.JwtFilter;
 
 @Configuration
 public class SecurityConfig {
-	
-	@Autowired
-	private UserAuthService userAuthService;
 	
 	@Autowired
 	private JwtFilter jwtFilter;
@@ -30,7 +26,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
 		return security.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(request -> request
-							.requestMatchers("/user/login", "/user/register")
+							.requestMatchers("login", "register")
 							.permitAll()
 							.anyRequest()
 							.authenticated())
@@ -43,7 +39,7 @@ public class SecurityConfig {
 	public AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-		daoAuthenticationProvider.setUserDetailsService(userAuthService);
+//		daoAuthenticationProvider.setUserDetailsService(userAuthService);
 		return daoAuthenticationProvider;
 	}
 	
