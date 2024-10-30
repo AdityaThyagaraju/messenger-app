@@ -1,4 +1,4 @@
-package com.dev.authServices.model;
+package com.dev.userService.model;
 
 import java.util.Collection;
 
@@ -9,7 +9,16 @@ public class UserPrincipal implements UserDetails {
 	
 	private User user;
 	
+
 	public UserPrincipal(User user){
+		this.user = user;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
 		this.user = user;
 	}
 
@@ -25,9 +34,16 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return user.getPassword();
+		return user.getUsername();
 	}
 	
-	
-
+//	@Override
+//	public boolean isAccountNonExpired() {
+//		return true;
+//	}
+//	
+//	@Override
+//	public boolean isAccountNonLocked() {
+//		return true;
+//	}
 }

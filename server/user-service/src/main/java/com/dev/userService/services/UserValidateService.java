@@ -1,4 +1,4 @@
-package com.dev.authServices.services;
+package com.dev.userService.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -6,7 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.dev.authServices.model.User;
+import com.dev.userService.model.User;
 
 
 @Service

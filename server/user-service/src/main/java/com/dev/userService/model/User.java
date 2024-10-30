@@ -1,4 +1,4 @@
-package com.dev.authServices.model;
+package com.dev.userService.model;
 
 import java.util.List;
 
@@ -9,12 +9,31 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 public class User {
 	
+	@Id
+    private String id;
+	
+
 	@Indexed(unique = true)
 	private String username;
 	private String password;
 	private String name;
 	private List<String> friendIds;
+	private List<String> friendRequests;
+	private List<String> conversationsIds;
+
 	
+	public List<String> getFriendRequests() {
+		return friendRequests;
+	}
+	public void setFriendRequests(List<String> friendRequests) {
+		this.friendRequests = friendRequests;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public List<String> getFriendIds() {
 		return friendIds;
 	}
@@ -22,7 +41,6 @@ public class User {
 		this.friendIds = friendIds;
 	}
 
-	private List<String> conversationsIds;
 	
 	public String getPassword() {
 		return password;
@@ -51,8 +69,9 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", name=" + name + ", friendIds=" + friendIds
-				+ ", conversationsIds=" + conversationsIds + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
+				+ ", friendIds=" + friendIds + ", friendRequests=" + friendRequests + ", conversationsIds="
+				+ conversationsIds + "]";
 	}
 	
 }

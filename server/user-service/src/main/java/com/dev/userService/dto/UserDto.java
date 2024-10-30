@@ -1,25 +1,43 @@
-package com.dev.authServices.dto;
+package com.dev.userService.dto;
 
 import java.util.List;
 
-import com.dev.authServices.model.User;
+import com.dev.userService.model.User;
 
 public class UserDto {
 	
+	private String id;
 	private String name;
 	private String username;
 	private String token;
 	private List<String> friendIds;
 	private List<String> conversationIds;
+	private List<String> friendRequests;
 	
 	public UserDto(User user, String token) {
+		this.id = user.getId();
 		this.name = user.getName();
 		this.username = user.getUsername();
 		this.token = token;
 		this.friendIds = user.getFriendIds();
+		this.friendRequests = user.getFriendRequests();
 		this.conversationIds = user.getConversationsIds();
 	}
 	
+	public List<String> getFriendRequests() {
+		return friendRequests;
+	}
+	public void setFriendRequests(List<String> friendRequests) {
+		this.friendRequests = friendRequests;
+	}
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getToken() {
 		return token;
 	}

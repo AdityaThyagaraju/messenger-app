@@ -1,4 +1,4 @@
-package com.dev.authServices.services;
+package com.dev.userService.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -39,8 +39,8 @@ public class JwtService {
                 .claims()
                 .add(claims)
                 .subject(username)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
+//                .issuedAt(new Date(System.currentTimeMillis()))
+//                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
                 .and()
                 .signWith(getKey())
                 .compact();
@@ -75,7 +75,8 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+//        return extractExpiration(token).before(new Date());
+    	return false;
     }
 
     private Date extractExpiration(String token) {

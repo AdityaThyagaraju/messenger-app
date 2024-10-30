@@ -1,4 +1,4 @@
-package com.dev.authServices.configurations;
+package com.dev.userService.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

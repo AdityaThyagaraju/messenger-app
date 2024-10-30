@@ -1,4 +1,4 @@
-package com.dev.authServices.filters;
+package com.dev.userService.filters;
 
 import java.io.IOException;
 
@@ -11,8 +11,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.dev.authServices.services.JwtService;
-import com.dev.authServices.services.UserAuthService;
+import com.dev.userService.services.JwtService;
+import com.dev.userService.services.UserAuthService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
-
+        
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             username = jwtService.extractUserName(token);
