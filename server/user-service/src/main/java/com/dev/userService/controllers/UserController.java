@@ -66,8 +66,8 @@ public class UserController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
     	
-        User user = userDetails.getUser();    	
-    	return new ResponseEntity<UserDto>(new UserDto(user, userValidateService.generateToken(user)), HttpStatusCode.valueOf(200));
+        User user = userDetails.getUser();
+    	return new ResponseEntity<UserDto>(new UserDto(user, jwtService.generateToken(user.getUsername())), HttpStatusCode.valueOf(200));
     }
 	
 	@RequestMapping(path="/friend/{id}", method=RequestMethod.GET)
