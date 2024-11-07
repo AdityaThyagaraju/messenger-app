@@ -9,7 +9,7 @@ function Home(){
 
   let {user, setUser}  = useContext(UserContext);
   let [conversations, setConversations] = useState([]);
-  let [selectedUserId, setSelectedUserId] = useState(-1);
+  let [selectedId, setSelectedId] = useState(-1);
   let url = process.env.REACT_APP_SERVER_URL;
 
   useEffect(() => {
@@ -50,13 +50,14 @@ function Home(){
 
       <ConversationSection 
       conversations={conversations} 
-      selectConversation={setSelectedUserId} />
+      selected={selectedId}
+      selectConversation={setSelectedId} />
 
       <MessageSection 
-      conversationId={selectedUserId} />
+      conversationId={selectedId} />
 
       <ProfileSection 
-      userId={selectedUserId} />
+      Id={selectedId} />
       
     </div>
   );

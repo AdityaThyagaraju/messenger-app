@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import UserContext from "./context/UserContext";
 import Home from "./pages/Home";
+import WebSocketComponent from "./components/WebSocketComponent";
 
 function App(){
   const [user, setUser] = useState(null);
@@ -15,7 +16,8 @@ function App(){
         <BrowserRouter>
           <Routes>
           {/* user==null ? <Login /> :  */}
-            <Route path="/" element={<Home />}></Route>
+            {/* <Route path="/" element={<Home />}></Route> */}
+            <Route path="/" element={<WebSocketComponent />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
           </Routes>

@@ -2,7 +2,7 @@ import React from "react";
 import Conversation from "./Conversation";
 import { useState } from "react";
 
-function ConversationSection({conversations, setSelected}){
+function ConversationSection({conversations, selected, setSelected}){
     
     return (
         <div className="flex flex-col w-1/6 gap-1">

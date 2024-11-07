@@ -19,7 +19,6 @@ public class User {
 	private String name;
 	private List<String> friendIds;
 	private List<String> friendRequests;
-	private List<String> conversationsIds;
 
 	
 	public List<String> getFriendRequests() {
@@ -60,18 +59,11 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<String> getConversationsIds() {
-		return conversationsIds;
-	}
-	public void setConversationsIds(List<String> conversationsIds) {
-		this.conversationsIds = conversationsIds;
-	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
-				+ ", friendIds=" + friendIds + ", friendRequests=" + friendRequests + ", conversationsIds="
-				+ conversationsIds + "]";
+				+ ", friendIds=" + friendIds + ", friendRequests=" + friendRequests + "]";
 	}
 	
 }

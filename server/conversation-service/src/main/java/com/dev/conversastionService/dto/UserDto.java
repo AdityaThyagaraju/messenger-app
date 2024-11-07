@@ -9,7 +9,6 @@ public class UserDto {
 	private String username;
 	private String token;
 	private List<String> friendIds;
-	private List<String> conversationIds;
 	private List<String> friendRequests;
 	
 	public List<String> getFriendRequests() {
@@ -51,16 +50,10 @@ public class UserDto {
 	public void setFriendIds(List<String> friendIds) {
 		this.friendIds = friendIds;
 	}
-	public List<String> getConversationIds() {
-		return conversationIds;
-	}
-	public void setConversationIds(List<String> conversationIds) {
-		this.conversationIds = conversationIds;
-	}
 
 	@Override
 	public String toString() {
 		return "UserDto [name=" + name + ", username=" + username + ", token=" + token + ", friendIds=" + friendIds
-				+ ", conversationIds=" + conversationIds + "]";
+				+ "]";
 	}
 }

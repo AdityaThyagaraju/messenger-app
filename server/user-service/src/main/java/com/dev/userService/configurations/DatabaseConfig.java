@@ -19,7 +19,7 @@ public class DatabaseConfig extends AbstractMongoClientConfiguration {
     @Bean
     @Override
     public MongoClient mongoClient() {
-        String connectionString = "mongodb+srv://adityauday2002:LkLWnvycMztzmwN3@cluster0.ihnpy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0mongodb+srv://adityauday2002:LkLWnvycMztzmwN3@cluster0.ihnpy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+        String connectionString = "mongodb+srv://adityauday2002:1OuG6hyPI2Y11SIm@cluster0.ihnpy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0mongodb+srv://adityauday2002:LkLWnvycMztzmwN3@cluster0.ihnpy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
         return MongoClients.create(connectionString);
     }
 
