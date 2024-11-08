@@ -13,21 +13,26 @@ function Home(){
   let url = process.env.REACT_APP_SERVER_URL;
 
   useEffect(() => {
-      let getConversations = async () => {
-        await fetch(url+'/conversations/'+user.id,
-          {
-            headers:{
-              Authorization : user.token
-            },
-            method:"GET"
-          }
-        ).then((data) => setConversations(data));
-      }
 
+      let getConversations = async () => {
+        let data = await fetch('http://localhost:8081/conversations',
+                    {
+                      method:"GET",
+                      headers:{
+                        "Content-Type":"application/json",
+                        "Authorization" : `Bearer ${user.token}`
+                      }
+                    }
+                  );
+        let conversationsNew = await data.json();
+        setConversations(conversationsNew)
+      }
+      console.log(conversations);
+      
       if(user!=null){
         getConversations();
       }
-    })
+    },[])
 
   return (
     <div className="flex h-screen bg-gray-200 gap-1">

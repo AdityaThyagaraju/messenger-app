@@ -8,7 +8,7 @@ const WebSocketComponent = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const jwtToken = 
-  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhQDEyMyJ9.OWBSAlKubCmqGXvywsVSDU5cX5orV81PzRKt4Tsj0qo";
+  "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhQDEyMyJ9.dudNp1EMf778u4I8r0zIn0IYPDuFTIZlAmi_smW5qTY";
 
   // useEffect(() => {
   //   const socket = io('http://localhost:8081',{
@@ -20,7 +20,7 @@ const WebSocketComponent = () => {
 
   useEffect(() => {
     // Initialize the WebSocket connection
-    const socket = new SockJS('http://localhost:8081/chat');
+    const socket = new SockJS('http://localhost:8081/connect');
     const client = Stomp.over(socket);
 
     // Connect with JWT token in the headers
@@ -28,9 +28,15 @@ const WebSocketComponent = () => {
       { Authorization: `Bearer ${jwtToken}` },
       () => {
         // Subscribe to the chat topic upon successful connection
-        client.subscribe('/topic/messages', (message) => {
-          const receivedMessage = JSON.parse(message.body);
-          setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+        client.subscribe('/user/67224de8bd0574554e23485a/queue/messages', (message) => {
+          let receivedMessage = message.body;
+          if(typeof receivedMessage == "string"){
+            console.log(receivedMessage);
+          }
+          else{
+            receivedMessage = JSON.parse(receivedMessage);
+            setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+          }
         });
       },
       (error) => {
@@ -51,9 +57,15 @@ const WebSocketComponent = () => {
   const sendMessage = () => {
     
     if (stompClient && input) {
-      stompClient.send("/app/sendMessage",{},JSON.stringify({
-        content : input
-      }))
+      stompClient.send(
+        "/connection/send.message",
+        {},
+        JSON.stringify({
+          senderId : "67224de8bd0574554e23485a",
+          receiverId : "67224df2bd0574554e23485b",
+          message : "Hi gube"
+        })
+      )
     }
   };
 

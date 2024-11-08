@@ -1,4 +1,4 @@
-package com.dev.conversastionService.configurations;
+package com.dev.chatService.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ public class DatabaseConfig extends AbstractMongoClientConfiguration {
 	
     @Override
     protected String getDatabaseName() {
-        return "conversationsDB";
+        return "chatsDB";
     }
 
     @Bean

@@ -28,8 +28,8 @@ import com.dev.userService.services.UserService;
 import com.dev.userService.services.UserValidateService;
 
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@CrossOrigin(origins = "localhost:8081")
 @RequestMapping(path = "/user")
 public class UserController {
 	

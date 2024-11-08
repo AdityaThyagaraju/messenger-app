@@ -15,9 +15,7 @@ function App(){
       <UserContext.Provider value={{ user, setUser }}>
         <BrowserRouter>
           <Routes>
-          {/* user==null ? <Login /> :  */}
-            {/* <Route path="/" element={<Home />}></Route> */}
-            <Route path="/" element={<WebSocketComponent />}></Route>
+            <Route path="/" element={user==null ? <Login /> : <Home />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
           </Routes>
