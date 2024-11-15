@@ -25,6 +25,11 @@ function Login() {
     });
 
     const token = await tokenResponse.text();
+
+    if(token==""){
+      console.log("Invalid credentials");
+      return;
+    }
     
     const userResponse = await fetch(server_url + '/user/extract-user', {
       method:"GET",

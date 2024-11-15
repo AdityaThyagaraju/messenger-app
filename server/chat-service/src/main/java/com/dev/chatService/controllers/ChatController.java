@@ -33,7 +33,7 @@ public class ChatController {
 	}
 	
 	@RequestMapping(path = "", method =  RequestMethod.POST)
-	public ResponseEntity<String> getChat(@RequestBody Chat chat) {
+	public ResponseEntity<String> addChat(@RequestBody Chat chat) {
 		Chat savedChat = chatService.saveChat(chat, getUser());
 		if(savedChat == null)
 			return new ResponseEntity<String>("Invalid Chat", HttpStatusCode.valueOf(400));

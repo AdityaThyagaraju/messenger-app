@@ -12,10 +12,10 @@ function ProfileSection(){
           </div>
           <div className="flex justify-between gap-5 p-5">
             <button className="p-2 w-24 border-2 border-gray-300">
-              <i class="fa-solid fa-phone"></i> Call
+              <i className="fa-solid fa-phone"></i> Call
             </button>
             <button className="p-2 w-24 border-2 border-gray-300">
-              <i class="fa-regular fa-user bg-gray-200 p-2 rounded-full bg-white"></i>
+              <i className="fa-regular fa-user bg-gray-200 p-2 rounded-full bg-white"></i>
               Profile
             </button>
           </div>
