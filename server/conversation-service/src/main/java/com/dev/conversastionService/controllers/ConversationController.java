@@ -61,7 +61,7 @@ public class ConversationController {
     		messagingTemplate.convertAndSendToUser(
     	            chatDto.getSenderId(),
     	            "/queue/messages",
-    	            "Sent message successfully"                  
+    	            chatDto                  
     	        );
     	}
     	else {

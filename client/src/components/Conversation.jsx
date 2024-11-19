@@ -26,7 +26,8 @@ function Conversation({ index, conversation, setSelected, backGround }){
       getFriend(conversation.user2Id);
     else
       getFriend(conversation.user1Id);
-  }, [friend])
+    
+  }, [])
 
   function handleSelect() {
     setSelected(index);
@@ -42,7 +43,13 @@ function Conversation({ index, conversation, setSelected, backGround }){
       </div>
       <div>
         <div className="px-2 py-1 truncate text-sm">
-          {conversation.lastMessage}
+            <strong>
+            {
+              friend&&conversation.lastMessageSenderId==friend.id
+            ?"" : 'You . '
+            }
+            </strong>
+            {conversation.lastMessage}
         </div>
       </div>
     </div>

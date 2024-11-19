@@ -6,17 +6,17 @@ import Signup from "./pages/Signup";
 import UserContext from "./context/UserContext";
 import Home from "./pages/Home";
 
-function App(){
+function App() {
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("user");
+    const savedUser = sessionStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
     }
   }, [user]);
 
@@ -25,7 +25,7 @@ function App(){
       <UserContext.Provider value={{ user, setUser }}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={user==null ? <Login /> : <Home />}></Route>
+            <Route path="/" element={user == null ? <Login /> : <Home />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
           </Routes>

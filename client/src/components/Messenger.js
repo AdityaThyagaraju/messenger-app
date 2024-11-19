@@ -7,7 +7,7 @@ class Messenger{
   constructor(user, receiveMessage){
     const socket = new SockJS('http://localhost:8081/connect');
     const client = Stomp.over(socket);
-
+    this.chat = {};
     this.client = client;
     this.user = user;
 
@@ -16,13 +16,10 @@ class Messenger{
       () => {
         client.subscribe(`/user/${user.id}/queue/messages`, (message) => {
           let receivedMessage = message.body;
-          if(typeof receivedMessage == "string"){
-            console.log(receivedMessage);
-          }
-          else{
-            chat = JSON.parse(receivedMessage);
-            receiveMessage(chat);
-          }
+          console.log(receivedMessage);
+          
+          let chat = JSON.parse(receivedMessage);
+          receiveMessage(chat);
         });
       },
       (error) => {
@@ -32,7 +29,12 @@ class Messenger{
   }
 
   sendMessage(recipientId, message){
-    client.send(
+    this.chat = {
+      senderId : this.user.id,
+      receiverId : recipientId,
+      message : message
+    }
+    this.client.send(
       "/connection/send.message",
       {},
       JSON.stringify({

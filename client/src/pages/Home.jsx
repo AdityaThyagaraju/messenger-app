@@ -1,104 +1,109 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import MessageSection from "../components/MessageSection";
 import ProfileSection from "../components/ProfileSection";
 import ConversationSection from "../components/ConversationSection";
 import UserContext from "../context/UserContext";
+import Messenger from "../components/Messenger";
 
 function Home(){
 
-  let {user, setUser}  = useContext(UserContext);
-  let [conversations, setConversations] = useState([]);
-  let [selectedConversationId, setSelectedConversationId] = useState(-1);
-  let [chats, setChats] = useState([]);
-  let [friend, setFriend] = useState(null);
-  let url = process.env.REACT_APP_SERVER_URL;
+  const {user, setUser}  = useContext(UserContext);
+  const [conversations, setConversations] = useState([]);
+  const [conversation, setConversation] = useState(null);
+  const friend = useRef(null);
+  const [messenger, setMessenger] = useState(null);
+  const [chats, setChats] = useState([]);
 
-  const receiveChat = (chat)=>{
-    if(chat.senderId == friend.id){
-      chats.push(chat);
+  const getChats = async (chatIds) => {
+    try {
+      const chatList = await Promise.all(
+        chatIds.map(async (chatId) => {
+          const response = await fetch(`http://localhost:8082/chats/${chatId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${user.token}`,
+            },
+          });
+
+          if (!response.ok) return null;
+
+          const rawData = await response.text();
+          return rawData ? JSON.parse(rawData) : null;
+        })
+      );
+
+      setChats(chatList.filter((chat) => chat !== null));
+    } catch (error) {
+      console.error("Error fetching chats:", error);
     }
+  };
+
+  const getFriend = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/user/friend/${userId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${user.token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch friend data");
+
+      const friendJson = await response.json();
+      friend.current = friendJson;
+    } catch (error) {
+      console.error("Error fetching friend data:", error);
+    }
+  };
+
+  const receiveChat = (chat) => {
+    let id = friend.current.id;
+    if(typeof chat == "string"){
+      console.log(chat);
+      return;
+    }
+    if (chat.senderId === id || chat.receiverId === id) {
+      setChats((prevChats) => [...prevChats, chat]);
+    }
+  };
+
+  const getConversations = async () => {
+    let data = await fetch('http://localhost:8081/conversations',
+                {
+                  method:"GET",
+                  headers:{
+                    "Content-Type":"application/json",
+                    "Authorization" : `Bearer ${user.token}`
+                  }
+                }
+              );
+    let conversationsNew = await data.json();
+    setConversations(conversationsNew); 
   }
 
-  const getChats = (chatIds)=>{
-    let chatList = [];
-    chatIds.map(async (chatId, index) => {
-      let data = await fetch(`http://localhost:8082/chats/${chatId}`, {
-        method:"GET",
-        headers:{
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${user.token}`
-        }
-      })
-      
-      if (data.ok) {
-        let rawData = await data.text();
-        
-        if (rawData === "") {
-          console.log(`Response for chat ID ${chatId} is null.`);
-        } else {
-          try {
-            let chat = JSON.parse(rawData);
-            console.log("Fetched data:", chat);
-            chatList.push(chat)
-          } catch (error) {
-            console.error(`Failed to parse JSON for chat ID ${chatId}:`, error);
-          }
-        }
-      } else {
-        console.error(`Failed to fetch chat with ID: ${chatId}, Status: ${data.status}`);
-      }
-    })
-
-    setChats(chatList);
-  }
-
-  const getFriend = async (userId)=>{
-    let data = await fetch(
-      `http://localhost:8080/user/friend/${userId}`,
-      {
-        method:"GET",
-        headers:{
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${user.token}`
-        }
-      }
-    );
-    let friendJson = await data.json();
-    setFriend(friendJson);
+  const selectConversationId = (index)=>{
+    let conv = conversations[index];
+    setConversation(conv);
   }
 
   useEffect(() => {
+    
+    if (conversation) {
+      getChats(conversation.chatIds);
+      let messenger = new Messenger(user, receiveChat);
+      setMessenger(messenger);
+      const { user1Id, user2Id } = conversation;
+      getFriend(user1Id === user.id ? user2Id : user1Id);
+    }
 
-      let getConversations = async () => {
-        let data = await fetch('http://localhost:8081/conversations',
-                    {
-                      method:"GET",
-                      headers:{
-                        "Content-Type":"application/json",
-                        "Authorization" : `Bearer ${user.token}`
-                      }
-                    }
-                  );
-        let conversationsNew = await data.json();
-        setConversations(conversationsNew);
-        console.log(conversationsNew);
-      }
-      
-      if(user!=null){
-        getConversations();
-      }
-
-      if(selectedConversationId>=0 && friend==null){
-        getChats(conversations[selectedConversationId].chatIds);
-  
-        if(conversations[selectedConversationId].user1Id == user.id)
-          getFriend(conversations[selectedConversationId].user2Id);
-        else
-          getFriend(conversations[selectedConversationId].user1Id);
-      }
-
-    },[user, selectedConversationId])
+    if(user!=null){
+      getConversations();
+    }
+    
+  },[user, conversation])
 
   return (
     <div className="flex h-screen bg-gray-200 gap-1">
@@ -121,17 +126,22 @@ function Home(){
 
       <ConversationSection 
       conversations={conversations} 
-      selected={selectedConversationId}
-      setSelected={setSelectedConversationId} />
+      selected={conversation?conversation.id:-1}
+      setSelected={selectConversationId} />
 
-      <MessageSection 
-      chats={chats}
-      friend={friend}
-       />
+      {conversation && (
+        <>
+          <MessageSection 
+          conversation={conversation}
+          chats={chats}
+          friend={friend.current}
+          messenger={messenger} />
+          
+          <ProfileSection 
+          friend={friend.current} />
+        </>
+      )}
 
-      <ProfileSection 
-      Id={user.id} />
-      
     </div>
   );
 }

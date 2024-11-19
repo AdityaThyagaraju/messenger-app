@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-function ProfileSection(){
+function ProfileSection({friend}){
+
+  useEffect(() => {
+
+  }, [friend])
+
     return (
-        <div className="w-1/5 bg-slate-200">
+        friend?<div className="w-1/5 bg-slate-200">
         <div className="h-2/5 bg-white flex flex-col items-center justify-center p-3">
           <div className="h-24 w-24 rounded-full bg-green-400"></div>
-          <div className="text-semibold mt-2">Amit RG</div>
+          <div className="text-semibold mt-2">{friend.name}</div>
           <div className="text-sm mt-1 text-grey-600">
             <span className="w-2 h-2 mx-1 rounded-full bg-green-400 inline-block"></span>
             online
@@ -26,20 +31,20 @@ function ProfileSection(){
             <div className="p-3 font-semibold">Customer details</div>
             <div className="flex justify-between p-3">
               <div>Email</div>
-              <div className="font-semibold">abc@gmail.com</div>
+              <div className="font-semibold">{friend.email}</div>
             </div>
             <div className="flex justify-between p-3">
-              <div>First name</div>
-              <div className="font-semibold">Amit</div>
+              <div>Date of Birth</div>
+              <div className="font-semibold">{friend.dob}</div>
             </div>
             <div className="flex justify-between p-3">
-              <div>Last name</div>
-              <div className="font-semibold">RG</div>
+              <div>About</div>
+              <div className="font-semibold">{friend.about}</div>
             </div>
             <div className="text-purple-900 text-center">View more details</div>
           </div>
         </div>
-      </div>
+      </div>:<></>
     )
 }
 

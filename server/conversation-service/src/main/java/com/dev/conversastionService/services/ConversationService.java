@@ -39,6 +39,7 @@ public class ConversationService {
 		String sender = user.getId();
 		String receiver = chat.getReceiverId();
 		String message = chat.getMessage();
+		chat.setTimestamp(new Date());
 		List<String> friendIds = user.getFriendIds();
 		
 		if(friendIds.indexOf(receiver) == -1)
@@ -61,7 +62,7 @@ public class ConversationService {
 		chatIds.add(chatId);
 		conversation.setChatIds(chatIds);
 		conversation.setLastMessage(chat.getMessage());
-		conversation.setLastMessageSenderName(user.getName());
+		conversation.setLastMessageSenderId(user.getId());
 		conversation.setLastMessageTime(new Date());
 		conversationRepository.save(conversation);
 		
