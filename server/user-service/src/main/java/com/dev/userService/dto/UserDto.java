@@ -15,6 +15,7 @@ public class UserDto {
 	private String about;
 	private String token;
 	private List<String> friendIds;
+	private List<String> pendingRequests;
 	private List<String> friendRequests;
 	
 	public UserDto(User user, String token) {
@@ -26,9 +27,18 @@ public class UserDto {
 		this.dob = user.getDob();
 		this.email = user.getEmail();
 		this.friendIds = user.getFriendIds();
+		this.pendingRequests = user.getPendingRequests();
 		this.friendRequests = user.getFriendRequests();
 	}
 	
+	public List<String> getPendingRequests() {
+		return pendingRequests;
+	}
+
+	public void setPendingRequests(List<String> pendingRequests) {
+		this.pendingRequests = pendingRequests;
+	}
+
 	public List<String> getFriendRequests() {
 		return friendRequests;
 	}
@@ -90,7 +100,7 @@ public class UserDto {
 	@Override
 	public String toString() {
 		return "UserDto [id=" + id + ", name=" + name + ", username=" + username + ", email=" + email + ", dob=" + dob
-				+ ", about=" + about + ", token=" + token + ", friendIds=" + friendIds + ", friendRequests="
-				+ friendRequests + "]";
+				+ ", about=" + about + ", token=" + token + ", friendIds=" + friendIds + ", pendingRequests="
+				+ pendingRequests + ", friendRequests=" + friendRequests + "]";
 	}
 }

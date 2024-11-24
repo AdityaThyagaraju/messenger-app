@@ -1,5 +1,6 @@
 package com.dev.userService.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,9 +78,9 @@ public class UserController {
     public ResponseEntity<FriendDto> getFriend(@PathVariable String id){
 		User user = getUserFromToken();
         
-        if(user.getFriendIds()==null || !user.getFriendIds().contains(id)) {
-        	return new ResponseEntity<FriendDto>(new FriendDto(new User()), HttpStatusCode.valueOf(200));
-        }
+//        if(user.getFriendIds()==null || !user.getFriendIds().contains(id)) {
+//        	return new ResponseEntity<FriendDto>(new FriendDto(new User()), HttpStatusCode.valueOf(200));
+//        }
     	
     	return new ResponseEntity<FriendDto>(new FriendDto(userService.getUserById(id)), HttpStatusCode.valueOf(200));
     }
@@ -90,10 +91,21 @@ public class UserController {
 		return new ResponseEntity<String>(userService.acceptFriendRequest(user.getId(), id), HttpStatusCode.valueOf(200));
     }
 	
+	@RequestMapping(path="/reject-friend-request", method=RequestMethod.POST)
+    public ResponseEntity<String> rejectFriend(@RequestParam(name = "friendId") String id){
+		User user = getUserFromToken();
+		return new ResponseEntity<String>(userService.rejectFriendRequest(user.getId(), id), HttpStatusCode.valueOf(200));
+    }
+	
 	@RequestMapping(path="/send-friend-request", method=RequestMethod.POST)
     public ResponseEntity<String> sendFriendRequest(@RequestParam(name = "friendId") String id){
 		User user = getUserFromToken();
         userService.sendFriendRequest(user.getId(), id);
         return new ResponseEntity<String>("Success", HttpStatusCode.valueOf(200));
     }
+	
+	@RequestMapping(path="/search", method=RequestMethod.GET)
+	public List<FriendDto> searchUsers(@RequestParam String query){
+		return userService.searchUser(query);
+	}
 }

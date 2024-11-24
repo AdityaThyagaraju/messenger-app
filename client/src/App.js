@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
@@ -7,16 +7,33 @@ import UserContext from "./context/UserContext";
 import Home from "./pages/Home";
 
 function App() {
-  const [user, setUser] = useState(() => {
-    const savedUser = sessionStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const [user, setUser] = useState(null);
 
+  const getUser = async (token)=>{
+      let userRaw = await fetch(
+        `http://localhost:8080/user/extract-user`,
+        {
+          method:"GET",
+          headers:{
+            "Content-Type" : "application/json",
+            "Authorization" : `Bearer ${token}`
+          }
+        }
+      );
+  
+      let newUser = await userRaw.json();
+      
+      setUser(newUser);
+    }
+    
   useEffect(() => {
-    if (user) {
-      sessionStorage.setItem("user", JSON.stringify(user));
-    } else {
-      sessionStorage.removeItem("user");
+    let savedToken = sessionStorage.getItem("token");
+    
+    if (savedToken && savedToken!="" && !user) {
+      getUser(savedToken);
+    }
+    else if(user){
+      sessionStorage.setItem("token", user.token);
     }
   }, [user]);
 
