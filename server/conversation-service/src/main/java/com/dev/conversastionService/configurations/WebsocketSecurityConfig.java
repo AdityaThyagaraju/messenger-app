@@ -35,8 +35,9 @@ public class WebsocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 	
 	@Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");
+        config.enableSimpleBroker("/user");
+        config.setApplicationDestinationPrefixes("/connection");
+        config.setUserDestinationPrefix("/user");
     }
 	
 	@Override
@@ -47,7 +48,7 @@ public class WebsocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 	@Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
-        	.addEndpoint("/chat")
+        	.addEndpoint("/connect")
         	.setAllowedOriginPatterns("*")
         	.withSockJS();
     }
@@ -55,7 +56,7 @@ public class WebsocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
     @Override
     protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
         messages	
-                .simpMessageDestMatchers("/topic/**").denyAll()
+                .simpMessageDestMatchers("/user/**").denyAll()
                 .anyMessage().permitAll();
     }
     

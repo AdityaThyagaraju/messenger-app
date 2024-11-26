@@ -37,8 +37,8 @@ public class SecurityConfig{
 				)
 				.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(request -> request
-							.requestMatchers("/conversation").authenticated()
-							.requestMatchers("/chat/**").permitAll()
+							.requestMatchers("/conversations").permitAll()
+							.requestMatchers("/connect/**").permitAll()
 							.anyRequest().denyAll())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

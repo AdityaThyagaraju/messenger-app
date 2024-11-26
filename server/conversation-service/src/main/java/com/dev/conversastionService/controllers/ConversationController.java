@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import com.dev.conversastionService.dto.ChatDto;
 import com.dev.conversastionService.dto.UserDto;
 import com.dev.conversastionService.model.Conversation;
+import com.dev.conversastionService.model.UserPrincipal;
 import com.dev.conversastionService.services.ConversationService;
 
 @RestController
@@ -34,30 +35,39 @@ public class ConversationController {
     }
 	
 	private UserDto getUser() {
-		return (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 	}
 
-    @MessageMapping("/messages")
+    @MessageMapping("/send.message")
     public void sendMessage(@Payload ChatDto chatDto) {
     	
-    	String status = conversationService.sendMessage(getUser(), chatDto);
+    	UserDto user = getUser();
+    	
+    	if(!user.getId().equals(chatDto.getSenderId())) {
+    		messagingTemplate.convertAndSendToUser(
+    				user.getId(), 
+    				"/queue/messages", 
+    				"Cannot send message, invalid token for given senderId!");
+    	}
+    	
+    	String status = conversationService.sendMessage(user, chatDto);
     	
     	if(status.equals("Success")) {
     		messagingTemplate.convertAndSendToUser(
     	            chatDto.getReceiverId(),
-    	            "/messages",
+    	            "/queue/messages",
     	            chatDto                  
     	        );
     		messagingTemplate.convertAndSendToUser(
     	            chatDto.getSenderId(),
-    	            "/messages",
-    	            "Sent message successfully"                  
+    	            "/queue/messages",
+    	            chatDto                  
     	        );
     	}
     	else {
     		messagingTemplate.convertAndSendToUser(
     	            chatDto.getSenderId(),
-    	            "/messages",
+    	            "/queue/messages",
     	            "Error occurred, message should be sent only to friends!"                  
     	        );
     	}

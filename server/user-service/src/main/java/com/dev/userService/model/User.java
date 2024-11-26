@@ -1,5 +1,6 @@
 package com.dev.userService.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -17,6 +18,9 @@ public class User {
 	private String username;
 	private String password;
 	private String name;
+	private String email;
+	private Date dob;
+	private String about;
 	private List<String> friendIds;
 	private List<String> friendRequests;
 
@@ -38,9 +42,25 @@ public class User {
 	}
 	public void setFriendIds(List<String> friendIds) {
 		this.friendIds = friendIds;
+	}	
+	public String getEmail() {
+		return email;
 	}
-
-	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Date getDob() {
+		return dob;
+	}
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+	public String getAbout() {
+		return about;
+	}
+	public void setAbout(String about) {
+		this.about = about;
+	}
 	public String getPassword() {
 		return password;
 	}
@@ -62,8 +82,9 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name
-				+ ", friendIds=" + friendIds + ", friendRequests=" + friendRequests + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", email="
+				+ email + ", dob=" + dob + ", about=" + about + ", friendIds=" + friendIds + ", friendRequests="
+				+ friendRequests + "]";
 	}
 	
 }

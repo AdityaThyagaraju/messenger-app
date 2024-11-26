@@ -5,25 +5,44 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const { user, setUser } = useContext(UserContext);
-  const [email,setEmail] = useState("");
+  const [username,setUsername] = useState("");
   const [password,setPassword] = useState("");
   const navigate = useNavigate();
   const server_url = process.env.REACT_APP_SERVER_URL;
 
   async function login(e) {
     e.preventDefault();
-    const savedUserResponse = await fetch(server_url + 'login', {
+    
+    const tokenResponse = await fetch(server_url + '/user/login', {
       method: "POST",
-      headers:{"Content-Type":"application/json"},
+      headers:{
+        "Content-Type":"application/json"
+      },
       body: JSON.stringify({
-        email:email,
-        password:password
+        "username":username,
+        "password":password
       }),
     });
-    savedUserResponse.json().then((newUser)=>{
-      setUser(newUser);
-      navigate("/");
+
+    const token = await tokenResponse.text();
+
+    if(token==""){
+      console.log("Invalid credentials");
+      return;
+    }
+    
+    const userResponse = await fetch(server_url + '/user/extract-user', {
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization" : `Bearer ${token}`
+      }
     })
+
+    const user = await userResponse.json();
+    
+    setUser(user);
+    navigate("/");
   }
 
   return (
@@ -34,13 +53,12 @@ function Login() {
         </h3>
         <div className="m-1 mt-10 px-5">
         <div className="mt-3">
-      <span>Email</span>
+      <span>Username</span>
       <input
-      onChange={(e)=>setEmail(e.target.value)}
-        name="email"
-        placeholder="abc@example.com"
-        value={email}
-        type="email"
+      onChange={(e)=>setUsername(e.target.value)}
+        name="username"
+        value={username}
+        type="username"
         className="rounded border-2 border-gray-600 w-full p-2 mt-2 block"
       ></input>
     </div>

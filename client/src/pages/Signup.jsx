@@ -7,29 +7,46 @@ function Signup() {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
   const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [about, setAbout] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const server_url = process.env.REACT_APP_SERVER_URL;
 
   async function signup(e) {
     e.preventDefault();
-    const savedUserResponse = await fetch(server_url + "signup", {
+    const tokenResponse = await  fetch(server_url + "/user/register", {
       method: "POST",
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify({
         name:name,
         email:email,
+        dob:dateOfBirth,
+        about:about,
+        username:userName,
         password:password
       }),
     });
-    savedUserResponse.json().then((newUser)=>{
-      setUser(newUser);
-      navigate("/");
+
+    const token = await tokenResponse.text();
+
+    const userResponse = await fetch(server_url + '/user/extract-user', {
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization" : `Bearer ${token}`
+      }
     })
+
+    const user = await userResponse.json();
+    
+    setUser(user);
+    navigate("/");
   }
 
   return (
-    <div className="bg-blue-800 min-h-screen flex items-center justify-center">
+    <div className="bg-blue-800 min-h-screen flex items-center justify-center p-5">
       <form className="min-w-96 bg-white min-h-64 rounded-lg" onSubmit={signup}>
         <h3 className="text-lg font-semibold text-center mt-10">
           Create Account
@@ -46,13 +63,46 @@ function Signup() {
         className="rounded border-2 border-gray-600 w-full p-2 mt-2 block"
       ></input>
     </div>
-        <div className="mt-3">
+    <div className="mt-3">
       <span>Email</span>
       <input
       onChange={(e)=>setEmail(e.target.value)}
         name="email"
         placeholder="abc@example.com"
         value={email}
+        type="email"
+        className="rounded border-2 border-gray-600 w-full p-2 mt-2 block"
+      ></input>
+    </div>
+    <div className="mt-3">
+      <span>Date of Birth</span>
+      <input
+      onChange={(e)=>setDateOfBirth(e.target.value)}
+        name="dob"
+        placeholder=""
+        value={dateOfBirth}
+        type="date"
+        className="rounded border-2 border-gray-600 w-full p-2 mt-2 block"
+      ></input>
+    </div>
+    <div className="mt-3">
+      <span>About</span>
+      <input
+      onChange={(e)=>setAbout(e.target.value)}
+        name="about"
+        placeholder=""
+        value={about}
+        type="text"
+        className="rounded border-2 border-gray-600 w-full p-2 mt-2 block"
+      ></input>
+    </div>
+    <div className="mt-3">
+      <span>Username</span>
+      <input
+      onChange={(e)=>setUserName(e.target.value)}
+        name="username"
+        placeholder=""
+        value={userName}
         type="email"
         className="rounded border-2 border-gray-600 w-full p-2 mt-2 block"
       ></input>

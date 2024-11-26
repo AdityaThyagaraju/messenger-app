@@ -14,7 +14,7 @@ public class Conversation {
 	private String user1Id;
 	private String user2Id;
 	private String lastMessage;
-	private String lastMessageSenderName;
+	private String lastMessageSenderId;
 	private Date lastMessageTime;
 	private List<String> chatIds;
 	
@@ -59,18 +59,17 @@ public class Conversation {
 	}
 	public void setChatIds(List<String> chatIds) {
 		this.chatIds = chatIds;
+	}	
+	public String getLastMessageSenderId() {
+		return lastMessageSenderId;
 	}
-	public String getLastMessageSenderName() {
-		return lastMessageSenderName;
+	public void setLastMessageSenderId(String lastMessageSenderId) {
+		this.lastMessageSenderId = lastMessageSenderId;
 	}
-	public void setLastMessageSenderName(String lastMessageSenderName) {
-		this.lastMessageSenderName = lastMessageSenderName;
-	}
-	
 	@Override
 	public String toString() {
 		return "Conversation [id=" + id + ", user1Id=" + user1Id + ", user2Id=" + user2Id + ", lastMessage="
-				+ lastMessage + ", lastMessageSenderName=" + lastMessageSenderName + ", lastMessageTime="
+				+ lastMessage + ", lastMessageSenderId=" + lastMessageSenderId + ", lastMessageTime="
 				+ lastMessageTime + ", chatIds=" + chatIds + "]";
 	}
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dev.userService.dto.FriendDto;
 import com.dev.userService.dto.UserDto;
 import com.dev.userService.model.User;
 import com.dev.userService.model.UserPrincipal;
@@ -28,8 +29,8 @@ import com.dev.userService.services.UserService;
 import com.dev.userService.services.UserValidateService;
 
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@CrossOrigin(origins = "localhost:8081")
 @RequestMapping(path = "/user")
 public class UserController {
 	
@@ -73,14 +74,14 @@ public class UserController {
     }
 	
 	@RequestMapping(path="/friend/{id}", method=RequestMethod.GET)
-    public ResponseEntity<UserDto> getFriend(@PathVariable String id){
+    public ResponseEntity<FriendDto> getFriend(@PathVariable String id){
 		User user = getUserFromToken();
         
         if(user.getFriendIds()==null || !user.getFriendIds().contains(id)) {
-        	return new ResponseEntity<UserDto>(new UserDto(new User(), ""), HttpStatusCode.valueOf(200));
+        	return new ResponseEntity<FriendDto>(new FriendDto(new User()), HttpStatusCode.valueOf(200));
         }
     	
-    	return new ResponseEntity<UserDto>(new UserDto(userService.getUserById(id), userValidateService.generateToken(user)), HttpStatusCode.valueOf(200));
+    	return new ResponseEntity<FriendDto>(new FriendDto(userService.getUserById(id)), HttpStatusCode.valueOf(200));
     }
 	
 	@RequestMapping(path="/accept-friend-request", method=RequestMethod.POST)
