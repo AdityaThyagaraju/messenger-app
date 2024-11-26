@@ -6,6 +6,7 @@ import Messenger from "./Messenger";
 function MessageSection({ chats, friend, messenger }) {
   const { user } = useContext(UserContext);
   const [message, setMessage] = useState("");
+  
 
   const sendMessage = () => {
     if (messenger) {
@@ -15,7 +16,7 @@ function MessageSection({ chats, friend, messenger }) {
   };
   
   useEffect(() => {
-    
+
   }, [chats, friend, messenger]);
 
   return (

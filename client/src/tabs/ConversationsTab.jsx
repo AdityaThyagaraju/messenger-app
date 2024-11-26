@@ -10,9 +10,11 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
   const {user, setUser}  = useContext(UserContext);
   const [conversations, setConversations] = useState([]);
   const [conversation, setConversation] = useState(null);
-  const friend = useRef(null);
-  const [messenger, setMessenger] = useState(null);
+  const [friend, setFriend] = useState(null);
   const [chats, setChats] = useState([]);
+  const friendRef = useRef(null);
+  const messenger = useRef(null);
+  const conversationSet = useRef(new Set());
 
   const getChats = async (chatIds) => {
     try {
@@ -52,34 +54,51 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
       if (!response.ok) throw new Error("Failed to fetch friend data");
 
       const friendJson = await response.json();
-      friend.current = friendJson;
+      friendRef.current = friendJson;
+      setFriend(friendJson);
     } catch (error) {
       console.error("Error fetching friend data:", error);
     }
   };
 
   const receiveChat = (chat) => {
-    let id = friend.current.id;
+    let id = friendRef.current?friendRef.current.id:-1;
+    let senderId = chat.senderId==user.id?chat.receiverId:chat.senderId;
     if(typeof chat == "string"){
       console.log(chat);
       return;
     }
+
     if(chat.senderId === id || chat.receiverId === id) {
       setChats((prevChats) => [...prevChats, chat]);
     }
-    
-    conversations.forEach((conversation) => {
-      if((chat.senderId == user.id && 
-        (conversation.user1Id == chat.receiverId || conversation.user2Id == chat.receiverId)) ||
-        (chat.receiverId == user.id && 
-          (conversation.user1Id == chat.senderId || conversation.user2Id == chat.senderId))
-      ){
-          conversation.lastMessageTime = chat.timestamp;
-          conversation.lastMessageSenderId = chat.senderId;
-          conversation.lastMessage = chat.message;
-          updateConversation(conversation);
-        }
-    })
+    getConversations();
+    // console.log(conversationSet.current);
+    // if(conversationSet.current.has(senderId)){
+      
+    //   conversations.forEach((conversation) => {
+    //     if((chat.senderId == user.id && 
+    //       (conversation.user1Id == chat.receiverId || conversation.user2Id == chat.receiverId)) ||
+    //       (chat.receiverId == user.id && 
+    //         (conversation.user1Id == chat.senderId || conversation.user2Id == chat.senderId))
+    //     ){  
+    //         conversation.lastMessageTime = chat.timestamp;
+    //         conversation.lastMessageSenderId = chat.senderId;
+    //         conversation.lastMessage = chat.message;
+    //         updateConversation(conversation);
+    //       }
+    //   })
+    // }
+    // else{
+    //   setConversations((prevConversations) => [{
+    //     user1Id:senderId,
+    //     user2Id:user.id,
+    //     lastMessageTime:chat.timestamp,
+    //     lastMessageSenderId:chat.senderId,
+    //     lastMessage:chat.message
+    //   }, ...prevConversations]);
+    //   conversationSet.current.add(senderId);
+    // }
   };
 
   const updateConversation = (updatedConversation) => {
@@ -133,7 +152,9 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
     }
     
     setStartConversation("");
-    setConversations(conversationsNew); 
+    setConversations(conversationsNew);
+    conversationSet.current = new Set(conversationsNew.map((con)=>
+      con.user1Id == user.id? con.user2Id : con.user1Id));
   }
 
   const selectConversationId = (index)=>{
@@ -143,19 +164,26 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
 
   useEffect(() => {
     
-    if (conversation) {
-      getChats(conversation.chatIds);
-      let messenger = new Messenger(user, receiveChat);
-      setMessenger(messenger);
-      const { user1Id, user2Id } = conversation;
-      getFriend(user1Id === user.id ? user2Id : user1Id);
+    if(!messenger.current){
+      let m = new Messenger(user, receiveChat);
+      messenger.current = m;
     }
 
-    if(user!=null){
+    if (conversation) {  
+      const { user1Id, user2Id } = conversation;
+      getFriend(user1Id === user.id ? user2Id : user1Id);
+      (conversation.chatIds && getChats(conversation.chatIds));
+    }
+
+    if(user!=null && conversation==null){
       getConversations();
     }
     
   },[user, conversation])
+
+  useEffect(()=>{
+    
+  },[friend]);
 
   return <>
     <ConversationSection 
@@ -168,11 +196,11 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
           <MessageSection 
           conversation={conversation}
           chats={chats}
-          friend={friend.current}
-          messenger={messenger} />
+          friend={friend}
+          messenger={messenger.current} />
           
           <ProfileSection 
-          friend={friend.current} />
+          friend={friend} />
         </>
       )}
 

@@ -3,7 +3,10 @@ import Conversation from "./Conversation";
 import { useState } from "react";
 
 function ConversationSection({ conversations, selected, setSelected }) {
-  useEffect(() => {}, [selected]);
+  console.log(conversations);
+  
+  useEffect(() => {
+  }, [conversations, selected]);
 
   return (
     <div className="flex flex-col w-full md:w-1/5 gap-1">

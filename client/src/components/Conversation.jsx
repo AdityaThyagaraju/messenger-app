@@ -6,7 +6,7 @@ function Conversation({ index, conversation, setSelected, backGround }){
   const classname = "border-b-2 border-slate-100 " + backGround;
   const {user, setUser} = useContext(UserContext);
   let [friend, setFriend] = useState(null);
-
+  
   const getFriend = async (userId)=>{
     let data = await fetch(
       `http://localhost:8080/user/friend/${userId}`,
@@ -19,6 +19,8 @@ function Conversation({ index, conversation, setSelected, backGround }){
       }
     );
     let friendJson = await data.json();
+    console.log(friendJson.name);
+    
     setFriend(friendJson);
   }
 
@@ -29,6 +31,10 @@ function Conversation({ index, conversation, setSelected, backGround }){
       getFriend(conversation.user1Id);
     
   }, [])
+
+  useEffect(()=>{
+
+  }, [friend])
 
   function handleSelect() {
     setSelected(index);
