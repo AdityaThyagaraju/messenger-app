@@ -30,7 +30,7 @@ import com.dev.userService.services.UserService;
 import com.dev.userService.services.UserValidateService;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {

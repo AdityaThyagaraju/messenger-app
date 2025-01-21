@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import formatTimestamp from "../utils/formatTimeStamp";
 
-function ProfileSection({friend}){
+function ProfileSection({friend, friendStatus}){
 
   useEffect(() => {
 
@@ -13,8 +13,9 @@ function ProfileSection({friend}){
           <div className="h-24 w-24 rounded-full bg-green-400"></div>
           <div className="text-semibold mt-2">{friend.name}</div>
           <div className="text-sm mt-1 text-grey-600">
-            <span className="w-2 h-2 mx-1 rounded-full bg-green-400 inline-block"></span>
-            online
+            <span className={`w-2 h-2 mx-1 rounded-full 
+            ${friendStatus=="online"?"bg-green-400":"bg-gray-400"} inline-block`}></span>
+            {friendStatus}
           </div>
           <div className="flex justify-between gap-5 p-5">
             <button className="p-2 w-24 border-2 border-gray-300">

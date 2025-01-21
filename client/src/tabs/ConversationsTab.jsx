@@ -5,16 +5,19 @@ import ProfileSection from "../components/ProfileSection";
 import ConversationSection from "../components/ConversationSection";
 import UserContext from "../context/UserContext";
 import Messenger from "../components/Messenger";
+import StatusStore from "../utils/StatusStore";
 
 const ConversationsTab = ({startConversation, setStartConversation})=>{
   const {user, setUser}  = useContext(UserContext);
   const [conversations, setConversations] = useState([]);
   const [conversation, setConversation] = useState(null);
   const [friend, setFriend] = useState(null);
+  const [friendStatus, setFriendStatus] = useState("offline");
   const [chats, setChats] = useState([]);
   const friendRef = useRef(null);
   const messenger = useRef(null);
   const conversationSet = useRef(new Set());
+  const statusStore = useRef(new StatusStore());
 
   const getChats = async (chatIds) => {
     try {
@@ -110,6 +113,18 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
   //     )
   //   );
   // };
+
+  const setStatus = (statusObj)=>{
+    if(statusObj.status=="online")
+      statusStore.current.setOnline(statusObj.userId);
+    else
+      statusStore.current.setOffline(statusObj.userId);
+
+    if(statusStore.current.checkStatus(friendRef.current && friendRef.current.id))
+      setFriendStatus("online");
+    else
+      setFriendStatus("offline");
+  }
   
 
   const getConversations = async () => {
@@ -162,12 +177,17 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
     setConversation(conv);
   }
 
-  useEffect(() => {
-    
-    if(!messenger.current){
-      let m = new Messenger(user, receiveChat);
-      messenger.current = m;
+  useEffect(()=>{
+
+    if(messenger.current==undefined){
+      let m = new Messenger(user, receiveChat, setStatus);
+      messenger.current = m; 
+      statusStore.current.initialize(user.token);
     }
+
+  },[])
+
+  useEffect(() => {
 
     if (conversation) {  
       const { user1Id, user2Id } = conversation;
@@ -183,6 +203,11 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
 
   useEffect(()=>{
     
+    if(friendRef.current && statusStore.current.checkStatus(friendRef.current.id))
+      setFriendStatus("online");
+    else
+      setFriendStatus("offline");
+
   },[friend]);
 
   return <>
@@ -200,7 +225,8 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
           messenger={messenger.current} />
           
           <ProfileSection 
-          friend={friend} />
+          friend={friend}
+          friendStatus={friendStatus} />
         </>
       )}
 
@@ -208,7 +234,7 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
         <div className="w-3/4 h-full text-center flex justify-center items-center p-3">
             <div className="bg-white text-6xl w-2/3 h-2/3 
             block flex justify-center items-center">
-            <span className="inline">Start connecting with people
+            <span className="inline">Start conversing with people
             <i class="fa-brands fa-connectdevelop"></i>
             </span>
             </div>

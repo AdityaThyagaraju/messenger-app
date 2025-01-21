@@ -4,7 +4,7 @@ import { Stomp } from '@stomp/stompjs';
 
 class Messenger{
 
-  constructor(user, receiveMessage){
+  constructor(user, receiveMessage, setStatus){
     const socket = new SockJS('http://localhost:8081/connect');
     const client = Stomp.over(socket);
     this.chat = {};
@@ -18,14 +18,17 @@ class Messenger{
           let receivedMessage = message.body;          
           let chat;
           try {
-           chat = JSON.parse(receivedMessage);
+           message = JSON.parse(receivedMessage);
            console.log(message);
            
           } catch (error) {
             console.log(receivedMessage);
             console.log(error);
           }
-          receiveMessage(chat);
+          if(message.messageType=="Chat")
+            receiveMessage(message);
+          else
+            setStatus(message);
         });
 
         client.send("/connection/status.online");

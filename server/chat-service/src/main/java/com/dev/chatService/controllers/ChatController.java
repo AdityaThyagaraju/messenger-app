@@ -18,6 +18,7 @@ import com.dev.chatService.services.ChatService;
 
 @RestController
 @RequestMapping(path = "/chats")
+@CrossOrigin(origins = "*")
 public class ChatController {
 	
 	@Autowired

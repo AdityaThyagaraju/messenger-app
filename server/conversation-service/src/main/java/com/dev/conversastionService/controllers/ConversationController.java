@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +26,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
+import com.dev.conversastionService.Stores.StatusStore;
 import com.dev.conversastionService.dto.ChatDto;
+import com.dev.conversastionService.dto.SessionCount;
+import com.dev.conversastionService.dto.StatusDto;
 import com.dev.conversastionService.dto.UserDto;
 import com.dev.conversastionService.model.Conversation;
 import com.dev.conversastionService.model.UserPrincipal;
@@ -33,11 +37,14 @@ import com.dev.conversastionService.services.ConversationService;
 import com.dev.conversastionService.services.UserOnlineService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class ConversationController {
 	
 	@Autowired
 	private ConversationService conversationService;
+	
+	@Autowired
+	private StatusStore statusStore;
 	
 	private final SimpMessagingTemplate messagingTemplate;
 	
@@ -93,6 +100,18 @@ public class ConversationController {
     @RequestMapping(path = "/conversations", method = RequestMethod.GET)
     public List<Conversation> getConversations(){
     	return conversationService.getConversations(getUser());
+    }
+    
+    @RequestMapping(path = "/friend-status", method = RequestMethod.GET)
+    public List<SessionCount> getStatus(){
+    	UserDto user = getUser();
+    	List<SessionCount> statusList = new ArrayList<>();
+    	
+    	for(String friendId : user.getFriendIds()) {
+    		statusList.add(new SessionCount(friendId, statusStore.getSessionCount(friendId)));
+    	}
+    	
+    	return statusList;
     }
 
 }

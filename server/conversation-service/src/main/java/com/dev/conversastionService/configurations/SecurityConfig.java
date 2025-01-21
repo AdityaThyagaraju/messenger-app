@@ -37,7 +37,7 @@ public class SecurityConfig{
 				)
 				.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(request -> request
-							.requestMatchers("/conversations").permitAll()
+							.requestMatchers("/conversations","/friend-status").permitAll()
 							.requestMatchers("/connect/**").permitAll()
 							.anyRequest().denyAll())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
