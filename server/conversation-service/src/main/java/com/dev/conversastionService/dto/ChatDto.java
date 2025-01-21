@@ -8,6 +8,14 @@ public class ChatDto {
 	private String senderId;
 	private String receiverId;
 	private String message;
+	private String messageType="Chat";
+	public String getMessageType() {
+		return messageType;
+	}
+	public void setMessageType(String messageType) {
+		this.messageType = messageType;
+	}
+
 	private Date timestamp;
 	
 	public String getChatId() {
@@ -44,7 +52,7 @@ public class ChatDto {
 	@Override
 	public String toString() {
 		return "ChatDto [chatId=" + chatId + ", senderId=" + senderId + ", receiverId=" + receiverId + ", message="
-				+ message + ", timestamp=" + timestamp + "]";
+				+ message + ", messageType=" + messageType + ", timestamp=" + timestamp + "]";
 	}
 	
 }

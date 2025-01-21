@@ -34,7 +34,7 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
           return rawData ? JSON.parse(rawData) : null;
         })
       );
-
+      
       setChats(chatList.filter((chat) => chat !== null));
     } catch (error) {
       console.error("Error fetching chats:", error);
@@ -101,15 +101,15 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
     // }
   };
 
-  const updateConversation = (updatedConversation) => {
-    setConversations((prevConversations) =>
-      prevConversations.map((conversation) =>
-        conversation.id === updatedConversation.id
-          ? { ...conversation, ...updatedConversation } // Update specific conversation
-          : conversation // Keep others unchanged
-      )
-    );
-  };
+  // const updateConversation = (updatedConversation) => {
+  //   setConversations((prevConversations) =>
+  //     prevConversations.map((conversation) =>
+  //       conversation.id === updatedConversation.id
+  //         ? { ...conversation, ...updatedConversation } // Update specific conversation
+  //         : conversation // Keep others unchanged
+  //     )
+  //   );
+  // };
   
 
   const getConversations = async () => {

@@ -19,8 +19,6 @@ function Conversation({ index, conversation, setSelected, backGround }){
       }
     );
     let friendJson = await data.json();
-    console.log(friendJson.name);
-    
     setFriend(friendJson);
   }
 

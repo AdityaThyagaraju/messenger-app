@@ -15,12 +15,20 @@ class Messenger{
       { Authorization: `Bearer ${user.token}` },
       () => {
         client.subscribe(`/user/${user.id}/queue/messages`, (message) => {
-          let receivedMessage = message.body;
-          console.log(receivedMessage);
-          
-          let chat = JSON.parse(receivedMessage);
+          let receivedMessage = message.body;          
+          let chat;
+          try {
+           chat = JSON.parse(receivedMessage);
+           console.log(message);
+           
+          } catch (error) {
+            console.log(receivedMessage);
+            console.log(error);
+          }
           receiveMessage(chat);
         });
+
+        client.send("/connection/status.online");
       },
       (error) => {
         console.error('WebSocket connection error:', error);
@@ -43,6 +51,10 @@ class Messenger{
         message : message
       })
     )
+  }
+
+  disconnect(){
+    this.client.send("/connection/status.offline");
   }
 }
 

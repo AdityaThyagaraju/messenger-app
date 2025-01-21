@@ -3,7 +3,6 @@ import Conversation from "./Conversation";
 import { useState } from "react";
 
 function ConversationSection({ conversations, selected, setSelected }) {
-  console.log(conversations);
   
   useEffect(() => {
   }, [conversations, selected]);

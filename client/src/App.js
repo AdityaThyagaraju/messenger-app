@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import UserContext from "./context/UserContext";
 import Home from "./pages/Home";
+import VideoCall from "./pages/VideoCall";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -35,6 +36,7 @@ function App() {
     else if(user){
       sessionStorage.setItem("token", user.token);
     }
+
   }, [user]);
 
   return (
@@ -42,6 +44,7 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}>
         <BrowserRouter>
           <Routes>
+            {/* <Route path="/" element={<VideoCall />} /> */}
             <Route path="/" element={user == null ? <Login /> : <Home />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>

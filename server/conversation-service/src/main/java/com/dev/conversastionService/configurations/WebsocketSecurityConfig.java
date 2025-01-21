@@ -80,7 +80,8 @@ public class WebsocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 
                                 SecurityContextHolder.getContext().setAuthentication(authentication);
                                 accessor.setUser(authentication);
-                                System.out.println("User authenticated: " + userDetails.getUsername());
+                                System.out.println("User authenticated: " + 
+                                ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
                             } else {
                                 throw new SecurityException("User extraction failed.");
                             }

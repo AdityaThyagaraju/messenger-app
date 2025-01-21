@@ -10,3 +10,45 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Global Scrollbar Styling */
+.styled-scrollbar::-webkit-scrollbar {
+  width: 10px; /* Scrollbar width */
+  background: #f1f1f1; /* Scrollbar track background */
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar thumb color */
+  border-radius: 10px; /* More rounded scrollbar thumb */
+  border: 2px solid transparent; /* Optional: Adds spacing around the thumb */
+  background-clip: padding-box; /* Ensures smooth appearance */
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker thumb on hover */
+}
+
+.styled-scrollbar::-webkit-scrollbar-button {
+  display: none; /* Remove the arrow buttons */
+}
+
+.styled-scrollbar {
+  scrollbar-width: thin; /* Firefox: Make scrollbar thinner */
+  scrollbar-color: #888 #f1f1f1; /* Firefox: Thumb and track color */
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .styled-scrollbar::-webkit-scrollbar {
+    background: #333; /* Darker track for dark mode */
+  }
+
+  .styled-scrollbar::-webkit-scrollbar-thumb {
+    background: #555; /* Neutral thumb for dark mode */
+  }
+
+  .styled-scrollbar {
+    scrollbar-color: #555 #333; /* Thumb and track color for Firefox */
+  }
+}
+
