@@ -1,4 +1,5 @@
 import React from "react";
+import formatTimestamp from "../utils/formatTimeStamp";
 
 function Chat({ align, message, image, timestamp }){
   return (
@@ -17,7 +18,7 @@ function Chat({ align, message, image, timestamp }){
                 align == "start" ? "left" : "right"
               }`}
             >
-              {timestamp}
+              {formatTimestamp(timestamp)}
             </div>
           </div>
           {align == "end" ? (

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import UserContext from "../context/UserContext";
+import formatTimestamp from "../utils/formatTimeStamp";
 
 function Conversation({ index, conversation, setSelected, backGround }){
   const classname = "border-b-2 border-slate-100 " + backGround;
   const {user, setUser} = useContext(UserContext);
   let [friend, setFriend] = useState(null);
-
+  
   const getFriend = async (userId)=>{
     let data = await fetch(
       `http://localhost:8080/user/friend/${userId}`,
@@ -29,6 +30,10 @@ function Conversation({ index, conversation, setSelected, backGround }){
     
   }, [])
 
+  useEffect(()=>{
+
+  }, [friend])
+
   function handleSelect() {
     setSelected(index);
   }
@@ -36,10 +41,10 @@ function Conversation({ index, conversation, setSelected, backGround }){
   return (
     <div className={classname} onClick={handleSelect}>
       <div className="flex flex-row">
-        <div className="px-2 py-1 flex flex-col justify-center w-2/3">
-          <div className="font-semibold">{friend?friend.name:null}</div>
+        <div className="px-2 py-1 flex flex-col justify-center w-full">
+          <div className="font-semibold truncate w-1/2">{friend?friend.name:null}</div>
         </div>
-        <div className="w-1/6 text-sm">{conversation.lastMessageTime}</div>
+        <div className="text-xs w-1/3 px-2 pt-1 text-end">{formatTimestamp(conversation.lastMessageTime)}</div>
       </div>
       <div>
         <div className="px-2 py-1 truncate text-sm">

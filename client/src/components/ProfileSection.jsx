@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import formatTimestamp from "../utils/formatTimeStamp";
 
 function ProfileSection({friend}){
 
@@ -35,7 +36,7 @@ function ProfileSection({friend}){
             </div>
             <div className="flex justify-between p-3">
               <div>Date of Birth</div>
-              <div className="font-semibold">{friend.dob}</div>
+              <div className="font-semibold">{formatTimestamp(friend.dob)}</div>
             </div>
             <div className="flex justify-between p-3">
               <div>About</div>

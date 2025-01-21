@@ -22,9 +22,16 @@ public class User {
 	private Date dob;
 	private String about;
 	private List<String> friendIds;
+	private List<String> pendingRequests;
 	private List<String> friendRequests;
 
 	
+	public List<String> getPendingRequests() {
+		return pendingRequests;
+	}
+	public void setPendingRequests(List<String> pendingRequests) {
+		this.pendingRequests = pendingRequests;
+	}
 	public List<String> getFriendRequests() {
 		return friendRequests;
 	}
@@ -83,8 +90,8 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", name=" + name + ", email="
-				+ email + ", dob=" + dob + ", about=" + about + ", friendIds=" + friendIds + ", friendRequests="
-				+ friendRequests + "]";
+				+ email + ", dob=" + dob + ", about=" + about + ", friendIds=" + friendIds + ", pendingRequests="
+				+ pendingRequests + ", friendRequests=" + friendRequests + "]";
 	}
 	
 }
