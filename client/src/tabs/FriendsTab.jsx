@@ -34,8 +34,8 @@ const FriendTab = ({startConversation, setStartConversation})=>{
   }, [searchResponse]);
 
     return <>
-    <div className="w-full h-full flex flex-col justify-center items-center gap-2">
-      <div className="bg-white h-2/5 w-5/6 p-5 flex flex-col justify-center">
+    <div className="w-full h-full flex flex-col justify-center items-center gap-5">
+      <div className="bg-white h-2/5 w-5/6 p-5 flex flex-col justify-center ring ring-gray-300">
         <h1 className="text-2xl font-semibold">Friend Requests</h1>
         <hr></hr>
         <div className="bg-gray-200 p-2 mt-5 h-2/3 w-full overflow-auto">
@@ -49,7 +49,7 @@ const FriendTab = ({startConversation, setStartConversation})=>{
           }
         </div>
       </div>
-      <div className="bg-white h-1/3 w-5/6 p-5">
+      <div className="bg-white h-1/3 w-5/6 p-5 ring ring-gray-300">
        <div className="flex justify-between">
        <h1 className="text-2xl font-semibold mt-3">Search Friends</h1>
         <div className="relative w-1/2">

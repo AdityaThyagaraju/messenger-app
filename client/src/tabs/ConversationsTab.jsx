@@ -233,9 +233,9 @@ const ConversationsTab = ({startConversation, setStartConversation})=>{
       {!conversation && <>
         <div className="w-3/4 h-full text-center flex justify-center items-center p-3">
             <div className="bg-white text-6xl w-2/3 h-2/3 
-            block flex justify-center items-center">
-            <span className="inline">Start conversing with people
-            <i class="fa-brands fa-connectdevelop"></i>
+            block flex justify-center items-center ring ring-sky-800">
+            <span className="inline">Start a convo,<br /> Spark a connection!✨
+            {/* <i class="fa-brands fa-connectdevelop"></i> */}
             </span>
             </div>
         </div>

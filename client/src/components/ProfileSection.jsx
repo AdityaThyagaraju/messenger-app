@@ -10,11 +10,11 @@ function ProfileSection({friend, friendStatus}){
     return (
         friend?<div className="w-1/5 bg-slate-200">
         <div className="h-2/5 bg-white flex flex-col items-center justify-center p-3">
-          <div className="h-24 w-24 rounded-full bg-green-400"></div>
+          <div className="h-24 w-24 rounded-full bg-gray-300"></div>
           <div className="text-semibold mt-2">{friend.name}</div>
           <div className="text-sm mt-1 text-grey-600">
             <span className={`w-2 h-2 mx-1 rounded-full 
-            ${friendStatus=="online"?"bg-green-400":"bg-gray-400"} inline-block`}></span>
+            ${friendStatus=="online"?"bg-green-500":"bg-gray-500"} inline-block`}></span>
             {friendStatus}
           </div>
           <div className="flex justify-between gap-5 p-5">
@@ -30,7 +30,7 @@ function ProfileSection({friend, friendStatus}){
 
         <div className="flex justify-center h-1/3 mt-5">
           <div className="bg-white w-11/12 rounded-lg">
-            <div className="p-3 font-semibold">Customer details</div>
+            <div className="p-3 font-semibold">Friend details</div>
             <div className="flex justify-between p-3">
               <div>Email</div>
               <div className="font-semibold">{friend.email}</div>
