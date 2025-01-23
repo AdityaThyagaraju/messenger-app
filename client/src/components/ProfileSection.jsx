@@ -37,7 +37,7 @@ function ProfileSection({friend, friendStatus}){
             </div>
             <div className="flex justify-between p-3">
               <div>Date of Birth</div>
-              <div className="font-semibold">{formatTimestamp(friend.dob)}</div>
+              <div className="font-semibold">{formatTimestamp(friend.dob).split(" ")[0]}</div>
             </div>
             <div className="flex justify-between p-3">
               <div>About</div>

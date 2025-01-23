@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import Conversation from "./Conversation";
-import { useState } from "react";
 
 function ConversationSection({ conversations, selected, setSelected }) {
   
-  useEffect(() => {
-  }, [conversations, selected]);
+  useEffect(() => {}, [conversations, selected]);
 
   return (
     <div className="flex flex-col w-full md:w-1/5 gap-1">
@@ -22,15 +20,21 @@ function ConversationSection({ conversations, selected, setSelected }) {
 
       {/* Conversations List */}
       <div className="h-full flex flex-col gap-0.5 overflow-auto bg-white">
-        {conversations.map((conversation, key) => (
-          <Conversation
-            key={key}
-            index={key}
-            conversation={conversation}
-            backGround={conversation.id === selected ? "bg-slate-200" : ""}
-            setSelected={setSelected}
-          />
-        ))}
+        {conversations.length > 0 ? (
+          conversations.map((conversation, key) => (
+            <Conversation
+              key={key}
+              index={key}
+              conversation={conversation}
+              backGround={conversation.id === selected ? "bg-slate-200" : ""}
+              setSelected={setSelected}
+            />
+          ))
+        ) : (
+          <div className="text-center text-gray-500 mt-4">
+            No conversations yet
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 function formatTimestamp(timestamp) {
-  if (!timestamp) return "Invalid Date";
+  if (!timestamp) return "";
 
   // Parse the timestamp into a JavaScript Date object
   const date = new Date(timestamp);
 
-  if (isNaN(date.getTime())) return "Invalid Date";
+  if (isNaN(date.getTime())) return "";
 
   // Extract date components
   const day = String(date.getDate()).padStart(2, "0"); // Ensure two digits
